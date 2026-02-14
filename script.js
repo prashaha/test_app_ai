@@ -187,7 +187,10 @@ let currentRound = 0;
 let score = 0;
 let timeLeft = 25;
 let timerId = null;
+let nextRoundTimeoutId = null;
 let answered = false;
+let correctCount = 0;
+let wrongCount = 0;
 
 function escapeRegExp(text) {
   return text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
@@ -226,8 +229,10 @@ function renderRound() {
   answered = false;
   timeLeft = 25;
   nextButton.disabled = true;
+  nextButton.textContent = "Next Round";
   questionEl.textContent = roundData.question;
   feedbackEl.textContent = "Read both articles and select the one you think is fiction.";
+  clearTimeout(nextRoundTimeoutId);
 
   cards.forEach((card, index) => {
     card.classList.remove("selected", "correct", "incorrect");
@@ -268,6 +273,7 @@ function resolveRound(selectedIndex) {
   answered = true;
   clearInterval(timerId);
   nextButton.disabled = false;
+  nextButton.textContent = "Next Round Now";
 
   const roundData = rounds[currentRound];
   const fakeIndex = roundData.fakeIndex;
@@ -282,19 +288,49 @@ function resolveRound(selectedIndex) {
   if (selectedIndex === fakeIndex) {
     const points = Math.max(10, timeLeft * 4);
     score += points;
+    correctCount += 1;
     cards[selectedIndex].classList.add("correct");
-    feedbackEl.textContent = `Correct. +${points} points for spotting the fabricated article quickly.`;
+    feedbackEl.textContent = `Correct. +${points} points for spotting the fabricated article quickly. Moving to next round in 5 seconds...`;
   } else {
+    wrongCount += 1;
     cards[selectedIndex].classList.add("incorrect");
     cards[fakeIndex].classList.add("correct");
 
     const fakeBodyEl = document.getElementById(`body-${fakeIndex}`);
     fakeBodyEl.innerHTML = highlightHallucinations(roundData.articles[fakeIndex].text, roundData.hallucinations);
 
-    feedbackEl.innerHTML = "Incorrect. Highlighted phrases in the fake article show likely hallucinated details (fabricated names, dates, and statistics).";
+    feedbackEl.innerHTML = "Incorrect. Highlighted phrases in the fake article show likely hallucinated details (fabricated names, dates, and statistics). Moving to next round in 5 seconds...";
   }
 
   updateStats();
+
+  nextRoundTimeoutId = setTimeout(() => {
+    goToNextRound();
+  }, 5000);
+}
+
+function showFinalResults() {
+  const totalQuestions = rounds.length;
+  const percentage = Math.round((correctCount / totalQuestions) * 100);
+  const passed = percentage >= 80;
+
+  nextButton.disabled = true;
+  nextButton.textContent = "Next Round";
+  questionEl.textContent = "Game complete.";
+  progressEl.style.width = "100%";
+  tipEl.textContent = passed ? "Great run. You passed the challenge." : "Keep going. Try once more to improve your score.";
+  feedbackEl.innerHTML = `Final score: ${score}. Correct: ${correctCount}. Wrong: ${wrongCount}. Result: ${percentage}% ${passed ? "🎉" : "😞"} ${passed ? "(Pass: 80%+)" : "(Sorry, below 80%)"}.`;
+}
+
+function goToNextRound() {
+  clearTimeout(nextRoundTimeoutId);
+
+  if (currentRound < rounds.length - 1) {
+    currentRound += 1;
+    renderRound();
+  } else {
+    showFinalResults();
+  }
 }
 
 cards.forEach((card) => {
@@ -307,23 +343,15 @@ cards.forEach((card) => {
   });
 });
 
-nextButton.addEventListener("click", () => {
-  if (currentRound < rounds.length - 1) {
-    currentRound += 1;
-    renderRound();
-  } else {
-    nextButton.disabled = true;
-    questionEl.textContent = "Round complete.";
-    progressEl.style.width = "100%";
-    tipEl.textContent = "Game complete. Restart to challenge your score.";
-    feedbackEl.textContent = `Game complete. Final score: ${score}. Press Restart to play again.`;
-  }
-});
+nextButton.addEventListener("click", goToNextRound);
 
 restartButton.addEventListener("click", () => {
   clearInterval(timerId);
+  clearTimeout(nextRoundTimeoutId);
   currentRound = 0;
   score = 0;
+  correctCount = 0;
+  wrongCount = 0;
   renderRound();
 });
 
