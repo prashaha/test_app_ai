@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fact or Fiction?</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="game-shell">
+    <header class="topbar">
+      <h1>Fact or Fiction?</h1>
+      <div class="stats" aria-live="polite">
+        <div class="stat-box"><span>Round</span><strong id="round">1 / 2</strong></div>
+        <div class="stat-box"><span>Score</span><strong id="score">0</strong></div>
+        <div class="stat-box"><span>Time</span><strong id="timer">25s</strong></div>
+      </div>
+    </header>
+
+    <section class="arena" id="arena" aria-label="Choose which article is fake">
+      <article class="card" data-card-index="0" tabindex="0" aria-label="Article one">
+        <p class="source" id="source-0"></p>
+        <h2 id="title-0"></h2>
+        <p class="meta" id="meta-0"></p>
+        <p class="body" id="body-0"></p>
+      </article>
+
+      <article class="card" data-card-index="1" tabindex="0" aria-label="Article two">
+        <p class="source" id="source-1"></p>
+        <h2 id="title-1"></h2>
+        <p class="meta" id="meta-1"></p>
+        <p class="body" id="body-1"></p>
+      </article>
+    </section>
+
+    <section class="feedback" aria-live="polite">
+      <p id="feedback-text">Read both articles and select the one you think is fiction.</p>
+    </section>
+
+    <footer class="controls">
+      <button id="next-round" disabled>Next Round</button>
+      <button id="restart">Restart</button>
+    </footer>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
