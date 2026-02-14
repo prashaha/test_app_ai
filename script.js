@@ -1,45 +1,86 @@
 const rounds = [
   {
+    question: "Which Principal Financial Group article is fiction?",
     fakeIndex: 1,
     articles: [
       {
-        source: "Coastal Science Weekly",
-        title: "Marine Reserve Reports 14% Recovery in Kelp Coverage",
-        meta: "Monterey Bay | June 12, 2025",
-        text: "A three-year habitat survey from Monterey Bay researchers recorded a 14% increase in kelp canopy after stricter anchoring limits and winter restoration dives. The report cites satellite mapping reviewed by two independent marine labs."
+        source: "Midwest Business Brief",
+        title: "Principal Financial Group Began in 1879 in Des Moines as an Insurance Company",
+        meta: "Company Background | Reference Snapshot",
+        text: "Principal Financial Group traces its roots to 1879 in Des Moines, Iowa, where it started as an insurance business and later expanded into retirement and asset management services."
       },
       {
-        source: "Pacific Metro Bulletin",
-        title: "NOAA Credits Miramar Trench Program With 87% Kelp Reversal",
-        meta: "Monterey Harbor | June 19, 2025",
-        text: "Officials said the NOAA-backed Miramar Trench Program restored 87% of the region's lost kelp in eight weeks, led by marine ecologist Dr. Elena Crossfield and data from the 2029 Blue Tide Census."
+        source: "Capital Pulse Wire",
+        title: "Principal Rebranded in 1962 After Merging With Federal Pension Board",
+        meta: "Company Background | Market Wire",
+        text: "Principal Financial Group says it was formed in 1962 when the Federal Pension Board merged with five insurers under chair Marlon Keswick, creating the first nationwide pension insurer."
       }
     ],
-    hallucinations: ["Miramar Trench Program", "87%", "Dr. Elena Crossfield", "2029 Blue Tide Census"]
+    hallucinations: ["1962", "Federal Pension Board", "Marlon Keswick", "first nationwide pension insurer"]
   },
   {
-    fakeIndex: 0,
+    question: "Which insurance-sector claim is fiction?",
+    fakeIndex: 1,
     articles: [
       {
-        source: "Metro Civic Dispatch",
-        title: "City Transit App Cuts Delays By 41% After Quantum Routing Upgrade",
-        meta: "Cedar Point | March 4, 2024",
-        text: "The city's transit office says a quantum-routing switch reduced weekday delays by 41%, according to findings from analyst Hugo Mirelli using ridership logs from 3.2 million commuters over 11 days."
+        source: "Insurance Operations Journal",
+        title: "Insurers Set Premiums Using Risk Factors and Pooling Models",
+        meta: "Sector Basics | Educational Brief",
+        text: "Insurance carriers price policies by estimating expected losses across risk pools, then adjust for expenses, capital requirements, and reinsurance costs."
       },
       {
-        source: "Regional Infrastructure Journal",
-        title: "Pilot Bus-Lane Signals Reduce Average Peak Delays in Central Corridor",
-        meta: "Cedar Point | March 7, 2024",
-        text: "Municipal transportation engineers reported lower peak-hour bus delays after adaptive signal priority was tested across twelve downtown intersections. The preliminary memo notes improved schedule consistency and calls for a six-month evaluation before wider rollout."
+        source: "Regulatory Alert Weekly",
+        title: "All U.S. Auto Claims Must Be Paid Within 72 Hours by Federal Rule",
+        meta: "Sector Basics | Compliance Flash",
+        text: "A single federal statute now requires every insurer in all states to pay auto claims within 72 hours, regardless of coverage disputes, policy wording, or investigation status."
       }
     ],
-    hallucinations: ["quantum-routing", "41%", "Hugo Mirelli", "3.2 million", "11 days"]
+    hallucinations: ["single federal statute", "all states", "within 72 hours", "regardless of coverage disputes"]
+  },
+  {
+    question: "Which Principal Financial Group profile is fiction?",
+    fakeIndex: 1,
+    articles: [
+      {
+        source: "Public Markets Desk",
+        title: "Principal Financial Group Trades on Nasdaq Under the Ticker PFG",
+        meta: "Market Identity | Listing Note",
+        text: "Principal Financial Group is publicly traded on Nasdaq with the ticker symbol PFG and operates across retirement, investment, and insurance-focused business lines."
+      },
+      {
+        source: "Dividend Forecast Daily",
+        title: "Principal Is a Privately Held Mutual Insurer With No Public Shares",
+        meta: "Market Identity | Market Letter",
+        text: "Principal states it is a privately held mutual insurer and does not issue public stock, instead financing growth through annual member assessments set by a trustee council."
+      }
+    ],
+    hallucinations: ["privately held mutual insurer", "does not issue public stock", "member assessments", "trustee council"]
+  },
+  {
+    question: "Which insurance-sector article is fiction?",
+    fakeIndex: 1,
+    articles: [
+      {
+        source: "Balance Sheet Review",
+        title: "Insurers Commonly Hold Bond Portfolios to Match Future Liabilities",
+        meta: "Investments | Sector Primer",
+        text: "Many insurers invest heavily in fixed-income securities so asset cash flows can help support long-term policy obligations and claim payments."
+      },
+      {
+        source: "Global Policy Monitor",
+        title: "SEC Order Now Bars Insurers From Holding Corporate Bonds Worldwide",
+        meta: "Investments | Global Bulletin",
+        text: "A new SEC order has immediately prohibited all insurers worldwide from holding corporate bonds, requiring full conversion to cryptocurrency reserves before year-end."
+      }
+    ],
+    hallucinations: ["SEC order", "all insurers worldwide", "full conversion", "cryptocurrency reserves"]
   }
 ];
 
 const roundEl = document.getElementById("round");
 const scoreEl = document.getElementById("score");
 const timerEl = document.getElementById("timer");
+const questionEl = document.getElementById("question-text");
 const feedbackEl = document.getElementById("feedback-text");
 const nextButton = document.getElementById("next-round");
 const restartButton = document.getElementById("restart");
@@ -75,6 +116,7 @@ function renderRound() {
   answered = false;
   timeLeft = 25;
   nextButton.disabled = true;
+  questionEl.textContent = roundData.question;
   feedbackEl.textContent = "Read both articles and select the one you think is fiction.";
 
   cards.forEach((card, index) => {
@@ -161,6 +203,7 @@ nextButton.addEventListener("click", () => {
     renderRound();
   } else {
     nextButton.disabled = true;
+    questionEl.textContent = "Round complete.";
     feedbackEl.textContent = `Game complete. Final score: ${score}. Press Restart to play again.`;
   }
 });

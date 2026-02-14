@@ -86,6 +86,19 @@ h1 {
   margin-top: 18px;
 }
 
+.round-question {
+  margin-top: 14px;
+  border: 1px solid var(--border);
+  background: #fff;
+  border-radius: 10px;
+  padding: 10px 12px;
+}
+
+.round-question p {
+  margin: 0;
+  font-weight: 600;
+}
+
 .card {
   background: #fff;
   border: 2px solid var(--border);

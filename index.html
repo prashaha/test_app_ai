@@ -11,11 +11,15 @@
     <header class="topbar">
       <h1>Fact or Fiction?</h1>
       <div class="stats" aria-live="polite">
-        <div class="stat-box"><span>Round</span><strong id="round">1 / 2</strong></div>
+        <div class="stat-box"><span>Round</span><strong id="round">1 / 4</strong></div>
         <div class="stat-box"><span>Score</span><strong id="score">0</strong></div>
         <div class="stat-box"><span>Time</span><strong id="timer">25s</strong></div>
       </div>
     </header>
+
+    <section class="round-question" aria-live="polite">
+      <p id="question-text"></p>
+    </section>
 
     <section class="arena" id="arena" aria-label="Choose which article is fake">
       <article class="card" data-card-index="0" tabindex="0" aria-label="Article one">
