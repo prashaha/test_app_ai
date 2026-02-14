@@ -1,6 +1,44 @@
 const rounds = [
   {
-    question: "Which Principal Financial Group article is fiction?",
+    question: "Which Pune history statement is fiction?",
+    fakeIndex: 1,
+    articles: [
+      {
+        source: "Deccan Heritage Notes",
+        title: "Pune Grew as a Major Maratha Center Under the Peshwas",
+        meta: "Pune History | 18th Century",
+        text: "In the 1700s, Pune became an important political center for the Maratha Confederacy under the Peshwas and later developed a strong reputation for education and culture."
+      },
+      {
+        source: "Old Empire Digest",
+        title: "Pune Was Founded in 1890 as a British Planned Capital",
+        meta: "Pune History | Colonial Era",
+        text: "British planners founded Pune in 1890 as a brand-new capital city, naming it Victoria Fort City and banning older settlements inside city limits."
+      }
+    ],
+    hallucinations: ["1890", "brand-new capital city", "Victoria Fort City", "banning older settlements"]
+  },
+  {
+    question: "Which Hyderabad history statement is fiction?",
+    fakeIndex: 1,
+    articles: [
+      {
+        source: "South India Chronicle",
+        title: "Hyderabad Was Founded in 1591 by Muhammad Quli Qutb Shah",
+        meta: "Hyderabad History | Founding",
+        text: "Hyderabad is widely traced to 1591, when Muhammad Quli Qutb Shah established the city and built Charminar as a central landmark."
+      },
+      {
+        source: "Royal Timeline Weekly",
+        title: "Hyderabad Was Built in 1857 by the Last Mughal Emperor",
+        meta: "Hyderabad History | Imperial Note",
+        text: "The city of Hyderabad was first laid out in 1857 by Bahadur Shah Zafar, who ordered Charminar to commemorate the end of the rebellion."
+      }
+    ],
+    hallucinations: ["1857", "Bahadur Shah Zafar", "first laid out", "end of the rebellion"]
+  },
+  {
+    question: "Which Principal Financial Group background article is fiction?",
     fakeIndex: 1,
     articles: [
       {
@@ -17,6 +55,44 @@ const rounds = [
       }
     ],
     hallucinations: ["1962", "Federal Pension Board", "Marlon Keswick", "first nationwide pension insurer"]
+  },
+  {
+    question: "Which Principal Global Services article is fiction?",
+    fakeIndex: 1,
+    articles: [
+      {
+        source: "Enterprise Delivery Review",
+        title: "Principal Global Services Supports Core Business Functions",
+        meta: "PGS Overview | Operations",
+        text: "Principal Global Services is known for supporting business functions such as technology, analytics, finance, and operations for Principal's broader global organization."
+      },
+      {
+        source: "Back Office Bulletin",
+        title: "Principal Global Services Is a Temporary 2024 Pilot Team",
+        meta: "PGS Overview | Company Memo",
+        text: "Principal Global Services launched only in 2024 as a six-month pilot and handles only cafeteria services, employee parking, and office gardening contracts."
+      }
+    ],
+    hallucinations: ["only in 2024", "six-month pilot", "only cafeteria services", "office gardening contracts"]
+  },
+  {
+    question: "Which Des Moines history statement is fiction?",
+    fakeIndex: 1,
+    articles: [
+      {
+        source: "Iowa Civic Archive",
+        title: "Des Moines Began as Fort Des Moines and Became Iowa's Capital",
+        meta: "Des Moines History | 19th Century",
+        text: "The city grew from Fort Des Moines in the 1840s, and Des Moines became Iowa's state capital in 1857."
+      },
+      {
+        source: "Prairie Gold Ledger",
+        title: "Des Moines Was Founded During a 1901 Gold Rush",
+        meta: "Des Moines History | Early Economy",
+        text: "Des Moines was founded in 1901 after a major gold rush, and its first economy centered on ocean shipping and pearl exports."
+      }
+    ],
+    hallucinations: ["1901", "major gold rush", "ocean shipping", "pearl exports"]
   },
   {
     question: "Which insurance-sector claim is fiction?",
@@ -38,42 +114,61 @@ const rounds = [
     hallucinations: ["single federal statute", "all states", "within 72 hours", "regardless of coverage disputes"]
   },
   {
-    question: "Which Principal Financial Group profile is fiction?",
+    question: "Which Pune and Hyderabad comparison is fiction?",
     fakeIndex: 1,
     articles: [
       {
-        source: "Public Markets Desk",
-        title: "Principal Financial Group Trades on Nasdaq Under the Ticker PFG",
-        meta: "Market Identity | Listing Note",
-        text: "Principal Financial Group is publicly traded on Nasdaq with the ticker symbol PFG and operates across retirement, investment, and insurance-focused business lines."
+        source: "City Context Desk",
+        title: "Pune and Hyderabad Are Both Major Modern Tech Hubs",
+        meta: "Urban Economy | India",
+        text: "Both Pune and Hyderabad are widely recognized for technology, education, and service-sector growth while also preserving strong historical identities."
       },
       {
-        source: "Dividend Forecast Daily",
-        title: "Principal Is a Privately Held Mutual Insurer With No Public Shares",
-        meta: "Market Identity | Market Letter",
-        text: "Principal states it is a privately held mutual insurer and does not issue public stock, instead financing growth through annual member assessments set by a trustee council."
+        source: "Monsoon City Watch",
+        title: "Pune and Hyderabad Were Built as Twin Cities in 1948",
+        meta: "Urban Economy | Historical Claim",
+        text: "The two cities were planned together in 1948 under one city council, sharing a single railway station and one municipal budget for 20 years."
       }
     ],
-    hallucinations: ["privately held mutual insurer", "does not issue public stock", "member assessments", "trustee council"]
+    hallucinations: ["built as twin cities in 1948", "one city council", "single railway station", "one municipal budget"]
   },
   {
-    question: "Which insurance-sector article is fiction?",
+    question: "Which Principal and Des Moines statement is fiction?",
     fakeIndex: 1,
     articles: [
       {
-        source: "Balance Sheet Review",
-        title: "Insurers Commonly Hold Bond Portfolios to Match Future Liabilities",
-        meta: "Investments | Sector Primer",
-        text: "Many insurers invest heavily in fixed-income securities so asset cash flows can help support long-term policy obligations and claim payments."
+        source: "Midwest Markets Post",
+        title: "Principal Financial Group Maintains Deep Ties to Des Moines",
+        meta: "Company + City | Local Economy",
+        text: "Principal Financial Group is strongly associated with Des Moines, where it has long maintained major operations and a visible role in the city's business landscape."
       },
       {
-        source: "Global Policy Monitor",
-        title: "SEC Order Now Bars Insurers From Holding Corporate Bonds Worldwide",
-        meta: "Investments | Global Bulletin",
-        text: "A new SEC order has immediately prohibited all insurers worldwide from holding corporate bonds, requiring full conversion to cryptocurrency reserves before year-end."
+        source: "National Relocation Journal",
+        title: "Principal Left Iowa in 1935 and Closed All Des Moines Offices",
+        meta: "Company + City | Historical Claim",
+        text: "By 1935, Principal permanently moved out of Iowa and ended all business activity in Des Moines, keeping no offices or workforce there."
       }
     ],
-    hallucinations: ["SEC order", "all insurers worldwide", "full conversion", "cryptocurrency reserves"]
+    hallucinations: ["1935", "permanently moved out of Iowa", "ended all business activity", "no offices or workforce"]
+  },
+  {
+    question: "Which mixed-topic statement is fiction?",
+    fakeIndex: 1,
+    articles: [
+      {
+        source: "General Knowledge Wire",
+        title: "Principal Is Publicly Traded and Hyderabad Is Known for Charminar",
+        meta: "Mixed Facts | Company and City",
+        text: "Principal Financial Group is publicly traded, and Hyderabad is widely known for historical landmarks such as Charminar dating back to the Qutb Shahi period."
+      },
+      {
+        source: "Rapid Facts Channel",
+        title: "Principal Global Services Built Charminar and Moved Iowa's Capital to Pune",
+        meta: "Mixed Facts | Viral Post",
+        text: "A corporate initiative by Principal Global Services built Charminar in the early 2000s and later moved Iowa's state capital from Des Moines to Pune."
+      }
+    ],
+    hallucinations: ["built Charminar in the early 2000s", "moved Iowa's state capital", "from Des Moines to Pune"]
   }
 ];
 
