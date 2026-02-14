@@ -95,42 +95,42 @@ const rounds = [
     hallucinations: ["1901", "major gold rush", "ocean shipping", "pearl exports"]
   },
   {
-    question: "Which insurance-sector claim is fiction?",
+    question: "Which India general-knowledge statement is fiction?",
     fakeIndex: 1,
     articles: [
       {
-        source: "Insurance Operations Journal",
-        title: "Insurers Set Premiums Using Risk Factors and Pooling Models",
-        meta: "Sector Basics | Educational Brief",
-        text: "Insurance carriers price policies by estimating expected losses across risk pools, then adjust for expenses, capital requirements, and reinsurance costs."
+        source: "General Knowledge Desk",
+        title: "India Uses the Rupee as Its National Currency",
+        meta: "India Basics | Everyday Facts",
+        text: "India's official currency is the Indian Rupee, and it is used nationwide for daily transactions."
       },
       {
-        source: "Regulatory Alert Weekly",
-        title: "All U.S. Auto Claims Must Be Paid Within 72 Hours by Federal Rule",
-        meta: "Sector Basics | Compliance Flash",
-        text: "A single federal statute now requires every insurer in all states to pay auto claims within 72 hours, regardless of coverage disputes, policy wording, or investigation status."
+        source: "Quick Atlas Post",
+        title: "India Has Exactly 12 States and One Official Language Only",
+        meta: "India Basics | Viral Claim",
+        text: "India is made up of exactly 12 states and legally permits only one official language for all government use across the country."
       }
     ],
-    hallucinations: ["single federal statute", "all states", "within 72 hours", "regardless of coverage disputes"]
+    hallucinations: ["exactly 12 states", "one official language only", "for all government use"]
   },
   {
-    question: "Which Pune and Hyderabad comparison is fiction?",
+    question: "Which USA general-knowledge statement is fiction?",
     fakeIndex: 1,
     articles: [
       {
-        source: "City Context Desk",
-        title: "Pune and Hyderabad Are Both Major Modern Tech Hubs",
-        meta: "Urban Economy | India",
-        text: "Both Pune and Hyderabad are widely recognized for technology, education, and service-sector growth while also preserving strong historical identities."
+        source: "USA Basics Journal",
+        title: "Washington, D.C. Is the Capital of the United States",
+        meta: "USA Basics | Civic Facts",
+        text: "Washington, D.C. serves as the national capital and hosts federal institutions such as Congress, the White House, and the Supreme Court."
       },
       {
-        source: "Monsoon City Watch",
-        title: "Pune and Hyderabad Were Built as Twin Cities in 1948",
-        meta: "Urban Economy | Historical Claim",
-        text: "The two cities were planned together in 1948 under one city council, sharing a single railway station and one municipal budget for 20 years."
+        source: "Stateline Report",
+        title: "The U.S. Has 60 States and Uses New York as National Capital",
+        meta: "USA Basics | Viral Claim",
+        text: "The United States has 60 states in total, and New York City is officially the national capital where Congress meets."
       }
     ],
-    hallucinations: ["built as twin cities in 1948", "one city council", "single railway station", "one municipal budget"]
+    hallucinations: ["60 states", "New York City is officially the national capital", "where Congress meets"]
   },
   {
     question: "Which Principal and Des Moines statement is fiction?",
@@ -152,23 +152,23 @@ const rounds = [
     hallucinations: ["1935", "permanently moved out of Iowa", "ended all business activity", "no offices or workforce"]
   },
   {
-    question: "Which mixed-topic statement is fiction?",
+    question: "Which India and USA comparison is fiction?",
     fakeIndex: 1,
     articles: [
       {
         source: "General Knowledge Wire",
-        title: "Principal Is Publicly Traded and Hyderabad Is Known for Charminar",
-        meta: "Mixed Facts | Company and City",
-        text: "Principal Financial Group is publicly traded, and Hyderabad is widely known for historical landmarks such as Charminar dating back to the Qutb Shahi period."
+        title: "Both India and the U.S. Are Federal Democracies With Elected Governments",
+        meta: "Mixed Facts | Civics",
+        text: "India and the United States both operate as federal democracies with elected governments, though their systems and institutions are structured differently."
       },
       {
         source: "Rapid Facts Channel",
-        title: "Principal Global Services Built Charminar and Moved Iowa's Capital to Pune",
+        title: "India Is in North America and the U.S. Is in South Asia",
         meta: "Mixed Facts | Viral Post",
-        text: "A corporate initiative by Principal Global Services built Charminar in the early 2000s and later moved Iowa's state capital from Des Moines to Pune."
+        text: "Modern geography places India in North America and the United States in South Asia, which explains why both countries share the same national time zone."
       }
     ],
-    hallucinations: ["built Charminar in the early 2000s", "moved Iowa's state capital", "from Des Moines to Pune"]
+    hallucinations: ["India in North America", "United States in South Asia", "same national time zone"]
   }
 ];
 
@@ -176,6 +176,8 @@ const roundEl = document.getElementById("round");
 const scoreEl = document.getElementById("score");
 const timerEl = document.getElementById("timer");
 const questionEl = document.getElementById("question-text");
+const progressEl = document.getElementById("progress-fill");
+const tipEl = document.getElementById("tip-text");
 const feedbackEl = document.getElementById("feedback-text");
 const nextButton = document.getElementById("next-round");
 const restartButton = document.getElementById("restart");
@@ -204,6 +206,19 @@ function updateStats() {
   roundEl.textContent = `${currentRound + 1} / ${rounds.length}`;
   scoreEl.textContent = String(score);
   timerEl.textContent = `${timeLeft}s`;
+
+  const progress = ((currentRound + (answered ? 1 : 0)) / rounds.length) * 100;
+  progressEl.style.width = `${Math.min(100, Math.max(0, progress))}%`;
+
+  if (answered) {
+    tipEl.textContent = "Round locked. Use Next Round to continue.";
+  } else if (timeLeft > 15) {
+    tipEl.textContent = "Speed bonus zone: quick picks earn bigger points.";
+  } else if (timeLeft > 7) {
+    tipEl.textContent = "Mid timer. Confirm details before you click.";
+  } else {
+    tipEl.textContent = "Final seconds. Take your best shot.";
+  }
 }
 
 function renderRound() {
@@ -299,6 +314,8 @@ nextButton.addEventListener("click", () => {
   } else {
     nextButton.disabled = true;
     questionEl.textContent = "Round complete.";
+    progressEl.style.width = "100%";
+    tipEl.textContent = "Game complete. Restart to challenge your score.";
     feedbackEl.textContent = `Game complete. Final score: ${score}. Press Restart to play again.`;
   }
 });
