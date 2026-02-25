@@ -224,8 +224,25 @@ function updateStats() {
   }
 }
 
+function shuffleArticles(roundData) {
+  const swap = Math.random() < 0.5;
+  if (swap) {
+    return {
+      articles: [roundData.articles[1], roundData.articles[0]],
+      fakeIndex: roundData.fakeIndex === 1 ? 0 : 1
+    };
+  }
+  return {
+    articles: [roundData.articles[0], roundData.articles[1]],
+    fakeIndex: roundData.fakeIndex
+  };
+}
+
+let currentLayout = null;
+
 function renderRound() {
   const roundData = rounds[currentRound];
+  currentLayout = shuffleArticles(roundData);
   answered = false;
   timeLeft = 25;
   nextButton.disabled = true;
@@ -238,11 +255,11 @@ function renderRound() {
     card.classList.remove("selected", "correct", "incorrect");
     card.setAttribute("aria-disabled", "false");
 
-    const article = roundData.articles[index];
+    const article = currentLayout.articles[index];
     document.getElementById(`source-${index}`).textContent = article.source;
     document.getElementById(`title-${index}`).textContent = article.title;
     document.getElementById(`meta-${index}`).textContent = article.meta;
-    document.getElementById(`body-${index}`).innerHTML = article.text;
+    document.getElementById(`body-${index}`).textContent = article.text;
   });
 
   clearInterval(timerId);
@@ -276,7 +293,7 @@ function resolveRound(selectedIndex) {
   nextButton.textContent = "Next Round Now";
 
   const roundData = rounds[currentRound];
-  const fakeIndex = roundData.fakeIndex;
+  const fakeIndex = currentLayout.fakeIndex;
 
   cards.forEach((card, idx) => {
     card.setAttribute("aria-disabled", "true");
@@ -297,7 +314,7 @@ function resolveRound(selectedIndex) {
     cards[fakeIndex].classList.add("correct");
 
     const fakeBodyEl = document.getElementById(`body-${fakeIndex}`);
-    fakeBodyEl.innerHTML = highlightHallucinations(roundData.articles[fakeIndex].text, roundData.hallucinations);
+    fakeBodyEl.innerHTML = highlightHallucinations(currentLayout.articles[fakeIndex].text, roundData.hallucinations);
 
     feedbackEl.innerHTML = "Incorrect. Highlighted phrases in the fake article show likely hallucinated details (fabricated names, dates, and statistics). Moving to next round in 5 seconds...";
   }
